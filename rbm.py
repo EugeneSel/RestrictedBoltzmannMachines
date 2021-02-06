@@ -24,12 +24,10 @@ class RBM:
 
         # List of epochs' statistics to output:
         epoch_progress = []
-        # epoch_progress = f""
 
         for epoch in range(1, epochs + 1):
             # Initialize the current epoch statistics:
             epoch_progress.append("")
-            # epoch_progress += f"Epoch {epoch}:\n"
 
             epoch_mse = 0
 
@@ -63,15 +61,11 @@ class RBM:
                 
                 epoch_progress[-1] = f"Epoch {epoch}:\n" + \
                     f"Batch {batch_number}: {progress_bar}. Batch MSE: {mse:.5f}\n"
-                # new_line = f"Batch {batch_number}: {progress_bar}. Batch MSE: {mse:.5f}\n"
-                # epoch_progress = epoch_progress[:-(len(new_line) + len(str(batch_number)) - len(str(batch_number - 1)))] \
-                #                     + new_line
 
                 # Output the current batch and current epoch statistics:
                 if verbose:
                     clear_output(wait=True)
                     print("\n\n".join(epoch_progress), flush=True)
-                    # print(epoch_progress, flush=True)
 
                 # Calculate derivatives:
                 da = (v0 - v1).sum(axis=0)
@@ -85,12 +79,10 @@ class RBM:
             
             # Compute the current epoch average MSE:
             epoch_progress[-1] += f"Epoch average MSE: {epoch_mse / batch_number:.5f}"
-            # epoch_progress += f"Epoch average MSE: {epoch_mse / batch_number:.5f}\n\n"
         
         # The last output:
         clear_output()
         print("\n\n".join(epoch_progress))
-        # print(epoch_progress)
 
     def generate_images(self, iter_gibbs, nb_images, img_size=(20, 16)):
         v = (np.random.random([nb_images, self.p]) < .5).astype(int)
