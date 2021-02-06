@@ -92,12 +92,12 @@ class RBM:
         print("\n\n".join(epoch_progress))
         # print(epoch_progress)
 
-    def generate_images(self, iter_gibbs, nb_images, im_size=(20, 16)):
+    def generate_images(self, iter_gibbs, nb_images, img_size=(20, 16)):
         v = (np.random.random([nb_images, self.p]) < .5).astype(int)
 
         for i in range(iter_gibbs):
             h = (np.random.random(self.q) < sigmoid(v @ self.W + self.b)).astype(int)
             v = (np.random.random(self.p) < sigmoid(h @ self.W.T + self.a)).astype(int)
 
-        v = np.reshape(v, (nb_images, im_size[0], im_size[1]))
+        v = np.reshape(v, (nb_images, img_size[0], img_size[1]))
         return v
