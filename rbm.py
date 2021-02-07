@@ -18,12 +18,13 @@ class RBM:
         self.a = np.zeros([1, self.p])
         self.b = np.zeros([1, self.q])
 
-    def train(self, X, lr, epochs, batch_size, verbose=0):
+    def train(self, X, lr, epochs, batch_size, verbose=1, return_avg_mse=0):
         nb_samples = X.shape[0]
         X_ = X.copy()
 
         # List of epochs' statistics to output:
         epoch_progress = []
+        epoch_avg_mse = []
 
         for epoch in range(1, epochs + 1):
             # Initialize the current epoch statistics:
@@ -63,7 +64,7 @@ class RBM:
                     f"Batch {batch_number}: {progress_bar}. Batch MSE: {mse:.5f}\n"
 
                 # Output the current batch and current epoch statistics:
-                if verbose:
+                if verbose == 2:
                     clear_output(wait=True)
                     print("\n\n".join(epoch_progress), flush=True)
 
@@ -78,11 +79,16 @@ class RBM:
                 self.W += lr * dW / cur_batch_size
             
             # Compute the current epoch average MSE:
-            epoch_progress[-1] += f"Epoch average MSE: {epoch_mse / batch_number:.5f}"
-        
+            epoch_avg_mse += [epoch_mse / batch_number];
+            epoch_progress[-1] += f"Epoch average MSE: {epoch_avg_mse[-1]:.5f}"
+            
         # The last output:
-        clear_output()
-        print("\n\n".join(epoch_progress))
+        if verbose:
+            clear_output()
+            print("\n\n".join(epoch_progress))
+
+        if return_avg_mse:
+            return epoch_avg_mse
 
     def generate_images(self, iter_gibbs, nb_images, img_size=(20, 16)):
         v = (np.random.random([nb_images, self.p]) < .5).astype(int)
