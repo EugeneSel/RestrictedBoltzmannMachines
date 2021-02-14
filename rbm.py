@@ -85,7 +85,8 @@ class RBM:
         # The last output:
         if verbose:
             clear_output()
-            print("\n\n".join(epoch_progress))
+            if epoch % 100 == 0:
+                print("\n\n".join(epoch_progress))
 
         if return_avg_mse:
             return epoch_avg_mse
